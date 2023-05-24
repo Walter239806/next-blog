@@ -21,9 +21,9 @@ export default function Page() {
   ]
 
   return (
-    <>
+    <div className="pb-52">
       <Latest />
       <HomePost list={list} />
-    </>
+    </div>
   )
 }

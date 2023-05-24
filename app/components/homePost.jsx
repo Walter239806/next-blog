@@ -13,7 +13,7 @@ export default function HomePost(props) {
     })
   }
   return (
-    <div className="h-auto w-auto">
+    <div className="h-auto w-auto selection:bg-fuchsia-300 selection:text-black">
       <List />
     </div>
   )

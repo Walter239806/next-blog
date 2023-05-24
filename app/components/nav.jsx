@@ -14,11 +14,11 @@ export default function Header() {
     },
   ]
   return (
-    <header className="solid w-full border-b-2 bg-white hover:drop-shadow-xl ">
+    <header className="solid w-full select-none border-b-2 bg-white hover:drop-shadow-md ">
       <nav className="flex h-20 flex-row place-content-between">
         <Icon />
         <Link className="mr-5 mt-8" href={'/admin'}>
-          <p>Admin</p>
+          <p className="underline">Admin</p>
         </Link>
       </nav>
     </header>
