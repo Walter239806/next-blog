@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import Icon from './icon'
 
 export default function Header() {
   const links = [
@@ -14,19 +15,11 @@ export default function Header() {
   ]
   return (
     <header className="solid w-full border-b-2 bg-white hover:drop-shadow-xl ">
-      <nav className="h-12">
-        <ul className="mt-2 flex flex-row">
-          {links.map(({ route, label }) => (
-            <li
-              className={
-                label === 'Home' ? 'p-1 text-2xl font-bold hover:m-1' : 'mt-1.5 p-1 hover:m-3'
-              }
-              key={route}
-            >
-              <Link href={route}>{label}</Link>
-            </li>
-          ))}
-        </ul>
+      <nav className="flex h-20 flex-row place-content-between">
+        <Icon />
+        <Link className="mr-5 mt-8" href={'/admin'}>
+          <p>Admin</p>
+        </Link>
       </nav>
     </header>
   )

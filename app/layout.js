@@ -14,8 +14,10 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
       </head>
       <body>
-        <Header />
-        {children}
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+          <Header />
+          {children}
+        </div>
       </body>
     </html>
   )
