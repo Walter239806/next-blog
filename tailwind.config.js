@@ -15,7 +15,9 @@ module.exports = {
       '4xl': '2.441rem',
       '5xl': '3.052rem',
       '6xl': '5rem',
+      '30xl': '4rem',
     },
+
     extend: {},
   },
   plugins: [],
