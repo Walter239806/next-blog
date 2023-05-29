@@ -16,7 +16,6 @@ export const usePostStore = create((set, get) => ({
     return apiClient
       .get('/post/readAll')
       .then((response) => {
-        console.log(response.data)
         set(() => ({ list: response.data }))
       })
       .catch((error) => {
@@ -41,7 +40,6 @@ export const usePostStore = create((set, get) => ({
       })
       .finally(() => {
         set(() => ({ isLoading: false }))
-        console.log(get().post)
       })
   },
 }))
