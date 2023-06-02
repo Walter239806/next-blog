@@ -2,12 +2,14 @@
 import { useAuth } from '@/context/session'
 import { usePostStore } from '@/store/post'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import DataTable from '../../components/dataTable'
+import ModalComponent from '@/app/components/modal'
+import handleSubmit from '@/hooks/useSubmit'
 
 export default function AdminLogin() {
-  const [searchValue, setSearchValue] = useState('')
   const [dataFiltered, setDataFiltered] = useState([])
+  const search = useRef('')
   const router = useRouter()
 
   const { session } = useAuth()
@@ -15,6 +17,14 @@ export default function AdminLogin() {
 
   const rowClick = (row) => {
     router.push(`/post/${row}`)
+  }
+
+  const updateClick = (row) => {
+    router.push(`/login/admin/${row}`)
+  }
+
+  const onSearch = (e) => {
+    search.current = e.target.value
   }
 
   const columns = useMemo(
@@ -50,10 +60,15 @@ export default function AdminLogin() {
           className="w-96 border px-4 py-3 selection:bg-fuchsia-300 hover:shadow-lg focus:shadow-lg focus:outline-none "
           placeholder="Search By Title"
           type="text"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          ref={search}
+          onChange={onSearch}
         />
-        <DataTable columns={columns} data={dataFiltered} rowClick={rowClick} />
+        <DataTable
+          columns={columns}
+          data={dataFiltered}
+          rowClick={rowClick}
+          updateClick={updateClick}
+        />
       </div>
     )
   }
@@ -63,15 +78,27 @@ export default function AdminLogin() {
   }, [session])
 
   useEffect(() => {
-    if (searchValue.length >= 3) {
-      return setDataFiltered(
-        list.filter((i) => i.title.toLowerCase() === searchValue.toLowerCase())
+    if (search.current.length >= 3) {
+      setDataFiltered(
+        list.filter((i) => i.title.toLowerCase().includes(search.current.toLowerCase()))
       )
+    } else {
+      setDataFiltered(list)
     }
-    setDataFiltered(list)
-  }, [searchValue, list])
+  }, [list, search.current])
 
   return (
-    <>{isLoading ? <h1>Loading...</h1> : session?.state ? <Table /> : <h1>Not authorized</h1>}</>
+    <>
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : session?.state ? (
+        <>
+          {' '}
+          <Table /> <ModalComponent handleSubmit={handleSubmit} />
+        </>
+      ) : (
+        <h1>Not authorized</h1>
+      )}
+    </>
   )
 }

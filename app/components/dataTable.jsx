@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-key */
 import React from 'react'
 import styled from 'styled-components'
-import { useSortBy, useTable } from 'react-table'
+import { useSortBy, useTable, useRowSelect } from 'react-table'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import CheckBox from './checkbox'
 
 const Styles = styled.div`
   padding: 2rem;
@@ -12,8 +13,7 @@ const Styles = styled.div`
     thead {
       --tw-bg-opacity: 0.8;
       background-color: rgb(107 114 128 / var(--tw-bg-opacity));
-      cursor: none;
-      pointer-events: none;
+     
       user-select: none;
     }
 
@@ -47,17 +47,50 @@ const Styles = styled.div`
   }
 `
 
-const DataTable = ({ columns, data, rowClick }) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
-    {
-      columns,
-      data,
-      initialState: {
-        hiddenColumns: ['_id'],
+const DataTable = ({ columns, data, rowClick, checkBox, updateClick }) => {
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows } =
+    useTable(
+      {
+        columns,
+        data,
+        initialState: {
+          hiddenColumns: ['_id'],
+        },
       },
-    },
-    useSortBy
-  )
+      useSortBy,
+      useRowSelect,
+      (hooks) => {
+        hooks.visibleColumns.push((columns) => [
+          {
+            id: 'selection',
+            Header: ({ getToggleAllRowsSelectedProps }) => (
+              <CheckBox {...getToggleAllRowsSelectedProps()} />
+            ),
+            Cell: ({ row }) => <CheckBox {...row.getToggleRowSelectedProps()} />,
+          },
+          ...columns,
+          {
+            Header: 'Update',
+            Cell: ({ row }) => (
+              <h1
+                className="cursor-pointer text-black hover:text-fuchsia-300 hover:underline"
+                onClick={() => {
+                  sendUpdateClick(row.original._id)
+                }}
+              >
+                View
+              </h1>
+            ),
+          },
+        ])
+      }
+    )
+
+  const sendUpdateClick = (id) => {
+    if (updateClick) {
+      updateClick(id)
+    }
+  }
 
   const sendRowClick = (id) => {
     if (rowClick) {
@@ -95,7 +128,10 @@ const DataTable = ({ columns, data, rowClick }) => {
             prepareRow(row)
 
             return (
-              <tr {...row.getRowProps()} onClick={() => sendRowClick(row.original._id)}>
+              <tr
+                {...row.getRowProps()}
+                // onClick={() => sendRowClick(row.original._id)}
+              >
                 {row.cells.map((cell) => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
@@ -104,6 +140,15 @@ const DataTable = ({ columns, data, rowClick }) => {
           })}
         </tbody>
       </table>
+      <div>
+        {JSON.stringify(
+          {
+            selectedFlatRows: selectedFlatRows.map((row) => row.original._id),
+          },
+          null,
+          2
+        )}
+      </div>
     </Styles>
   )
 }
