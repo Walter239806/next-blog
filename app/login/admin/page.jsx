@@ -15,10 +15,6 @@ export default function AdminLogin() {
   const { session } = useAuth()
   const { list, isLoading, readAll } = usePostStore()
 
-  const rowClick = (row) => {
-    router.push(`/post/${row}`)
-  }
-
   const updateClick = (row) => {
     router.push(`/login/admin/${row}`)
   }
@@ -63,12 +59,7 @@ export default function AdminLogin() {
           ref={search}
           onChange={onSearch}
         />
-        <DataTable
-          columns={columns}
-          data={dataFiltered}
-          rowClick={rowClick}
-          updateClick={updateClick}
-        />
+        <DataTable columns={columns} data={dataFiltered} updateClick={updateClick} />
       </div>
     )
   }
@@ -78,14 +69,15 @@ export default function AdminLogin() {
   }, [session])
 
   useEffect(() => {
-    if (search.current.length >= 3) {
+    console.log('list', list)
+    if (list.length >= 3) {
       setDataFiltered(
         list.filter((i) => i.title.toLowerCase().includes(search.current.toLowerCase()))
       )
     } else {
       setDataFiltered(list)
     }
-  }, [list, search.current])
+  }, [list])
 
   return (
     <>

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useSortBy, useTable, useRowSelect } from 'react-table'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import CheckBox from './checkbox'
+import DeleteModal from './deleteModal'
 
 const Styles = styled.div`
   padding: 2rem;
@@ -47,7 +48,7 @@ const Styles = styled.div`
   }
 `
 
-const DataTable = ({ columns, data, rowClick, checkBox, updateClick }) => {
+const DataTable = ({ columns, data, updateClick }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows } =
     useTable(
       {
@@ -92,12 +93,6 @@ const DataTable = ({ columns, data, rowClick, checkBox, updateClick }) => {
     }
   }
 
-  const sendRowClick = (id) => {
-    if (rowClick) {
-      rowClick(id)
-    }
-  }
-
   return (
     <Styles>
       <table hover variant="dark" {...getTableProps}>
@@ -128,10 +123,7 @@ const DataTable = ({ columns, data, rowClick, checkBox, updateClick }) => {
             prepareRow(row)
 
             return (
-              <tr
-                {...row.getRowProps()}
-                // onClick={() => sendRowClick(row.original._id)}
-              >
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
@@ -140,15 +132,7 @@ const DataTable = ({ columns, data, rowClick, checkBox, updateClick }) => {
           })}
         </tbody>
       </table>
-      <div>
-        {JSON.stringify(
-          {
-            selectedFlatRows: selectedFlatRows.map((row) => row.original._id),
-          },
-          null,
-          2
-        )}
-      </div>
+      <DeleteModal selectedFlatRows={selectedFlatRows} />
     </Styles>
   )
 }

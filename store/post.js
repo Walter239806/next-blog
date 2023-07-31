@@ -4,6 +4,7 @@ import apiClient from '@/service/apiClient'
 
 export const usePostStore = create((set, get) => ({
   list: [],
+  listActive:[],
   post: {},
   isLoading: false,
   isError: null,
@@ -36,6 +37,25 @@ export const usePostStore = create((set, get) => ({
         set(() => ({ post: response.data }))
       })
       .catch((error) => {
+        toast.error(error.toString(), { duration: 10000 })
+      })
+      .finally(() => {
+        set(() => ({ isLoading: false }))
+      })
+  },
+
+    readAllActive: () => {
+    if (get().listActive.length) return get().listActive
+
+    set(() => ({ isLoading: true }))
+
+    return apiClient
+      .get('/post/readAllActive')
+      .then((response) => {
+        set(() => ({ listActive: response.data }))
+      })
+      .catch((error) => {
+        set(() => ({ isError: error }))
         toast.error(error.toString(), { duration: 10000 })
       })
       .finally(() => {

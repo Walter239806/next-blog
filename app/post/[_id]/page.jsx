@@ -13,10 +13,12 @@ export default function PostView({ params }) {
     readById(_id)
   }, [])
 
+  console.log(post)
+
   return (
     <div className="flex flex-col">
       <PostTitle title={post.title} />
-      <PostImage alt="PostImage" />
+      <PostImage src={post.coverImage} alt="PostImage" />
       <PostBody author={post.author} date={post.createdAt} body={post.body} />
     </div>
   )

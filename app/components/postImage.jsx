@@ -1,8 +1,9 @@
 import Image from 'next/image'
 export default function PostImage({ src, alt }) {
+  console.log(src)
   return (
     <Image
-      src="/large-triangles.svg"
+      src={src}
       alt={alt}
       height={300}
       width={600}

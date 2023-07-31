@@ -31,7 +31,10 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-56 mb-96 mt-36 flex flex-col place-items-center bg-gray-500 ">
+    <div
+      className="mx-auto mb-96
+     mt-36 flex w-auto flex-col place-items-center rounded-md border bg-gray-500"
+    >
       <h1 className="mt-4 text-3xl font-bold text-white selection:bg-fuchsia-300">Login</h1>
       <form className="flex flex-col place-items-center" onSubmit={login} noValidate>
         <input

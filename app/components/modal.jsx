@@ -45,7 +45,7 @@ export default function ModalComponent({ handleSubmit }) {
     const data = {
       title: title.current,
       author: author.current,
-      image: image.current,
+      coverImage: image.current,
       description: description.current,
       body: body.current,
     }

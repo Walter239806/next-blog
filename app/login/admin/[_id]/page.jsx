@@ -89,7 +89,7 @@ export default function EditPost({ params }) {
             className="ml-5 mt-3 w-96  text-black shadow"
             required
             name="image"
-            defaultValue={post.image}
+            defaultValue={post.coverImage}
             onChange={onValueChange}
           />
           <p className=" ml-5 mt-3 font-bold">Description:</p>
